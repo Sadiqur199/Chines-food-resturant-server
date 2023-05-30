@@ -29,6 +29,7 @@ async function run() {
 
      const menuCollection = client.db("chinesFood").collection("menu");
      const reviewCollection = client.db("chinesFood").collection("reviews");
+     const cartCollection = client.db("chinesFood").collection("carts");
 
      app.get('/menu',async(req,res)=>{
       const result = await menuCollection.find().toArray()
@@ -39,6 +40,27 @@ async function run() {
       res.send(result)
      })
 
+
+     //add to cart 
+    
+     app.get('/carts', async (req, res) => {
+      const email = req.query.email;
+
+      if (!email) {
+        res.send([]);
+      }
+      const query = { email: email };
+      const result = await cartCollection.find(query).toArray();
+      res.send(result);
+    });
+
+     app.post('/carts',async(req,res)=>{
+      const item = req.body;
+      // console.log(item)
+      const result = await cartCollection.insertOne(item)
+      res.send(result)
+
+     })
 
 
 
@@ -63,3 +85,17 @@ app.get('/',(req,res)=>{
 app.listen(port,()=>{
   console.log(`chines food is running port${port}`)
 })
+
+
+/**
+ * ------------------
+ * Naming Convention
+ * ------------------
+ * user: userCollection
+ * app.get(/user)
+ * app.get(/user/:id)
+ * app.post(/user)
+ * app.patch('/user/:id')
+ * app.put('/user/:id')
+ * app.delete('/user/:id')
+ */
