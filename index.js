@@ -137,6 +137,21 @@ async function run() {
       res.send(result)
      })
 
+     //menu added
+     app.post('/menu',verifyJwt,verifyAdmin,async(req,res)=>{
+      const newItem = req.body;
+      const result = await menuCollection.insertOne(newItem);
+      res.send(result)
+     })
+
+     //menu item deleted
+     app.delete('/menu/:id', verifyJwt, verifyAdmin, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await menuCollection.deleteOne(query);
+      res.send(result);
+    })
+
      //review related api
      app.get('/review',async(req,res)=>{
       const result = await reviewCollection.find().toArray()
