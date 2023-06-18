@@ -148,6 +148,7 @@ async function run() {
       res.send(result)
      })
 
+
      //menu item deleted
      app.delete('/menu/:id', verifyJwt, verifyAdmin, async (req, res) => {
       const id = req.params.id;
